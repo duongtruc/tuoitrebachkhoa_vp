@@ -1,0 +1,17 @@
+{% extends "_templates/home_base.twig" %}
+{% block content %}
+    <div class="grid" style="margin-top: 40px">
+        <div class="example">
+            {% if result == 1 %}
+                <h3 style="color: #0016b0">Kích hoạt tài khoản thành công.</h3></br> <p>Nhấn <a
+                        href="{{ constant('URL') }}">vào đây</a> để về trang chủ</p>
+            {% else %}
+                <h3 style="color: #ff0000">Kích hoạt tài khoản không thành công</h3><br><p>Tài khoản của bạn không tồn
+                tại hoặc đường dẫn kích hoạt không đúng.</p>
+                Nhấn <a href="{{ constant('URL') }}">vào đây</a> để về trang chủ hoặc
+                <a href="{{ constant('URL') }}users/register">vào đây</a> để đăng kí tài khoản mới.
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

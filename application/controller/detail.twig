@@ -1,0 +1,283 @@
+{% extends "_templates/home_base.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ constant('URL') }}public/js/application/profile-edit.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="grid" style="margin-top: 40px">
+        <div class="tab-control" data-role="tab-control">
+            <ul class="tabs">
+                <li {% if tab == 'profile' %}class="active"{% endif %}><a href="#_tab_profile"><i
+                                class="icon-user-2"></i>&nbsp;Hồ sơ thành viên</a></li>
+                <li {% if tab == 'activities' %}class="active"{% endif %}><a href="#_tab_activities"><i
+                                class="icon-calendar"></i>&nbsp;Hoạt động thành viên</a></li>
+                <li {% if tab == 'inbox' %}class="active"{% endif %}><a href="#_tab_inbox"><i
+                                class="icon-mail"></i>&nbsp;Tin nhắn</a></li>
+                <li {% if tab == 'articles' %}class="active"{% endif %}><a href="#_tab_articles"><i
+                                class="icon-newspaper"></i>&nbsp;Bài viết</a></li>
+                <li {% if tab == 'entries' %}class="active"{% endif %}><a href="#_tab_entries"><i
+                                class="icon-blogger"></i>&nbsp;Blog</a></li>
+            </ul>
+            <div class="frames">
+                <div class="frame" id="_tab_profile">
+                    <div class="row">
+                        <div class="span9">
+                            <input type="hidden" id="owner"
+                                   value="{% if userLogged.id == userDetails.id %}1{% else %}0{% endif %}">
+
+                            <h3 class="profile-name profile-detail"
+                                style="color: #0050ef">
+                                <span class="profile-content" id="fname">{{ userDetails.fname }}&nbsp;</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup></h3>
+
+                            <h3 class="profile-name profile-detail"
+                                style="color: #0050ef">
+                                <span class="profile-content" id="lname">{{ userDetails.lname }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup></h3>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-user-2 on-left fg-blue"></i>Giới tính:</div>
+                                <span class="profile-content-gender" id="gender">
+                                {% if userDetails.gender == 1 %}
+                                    &nbsp;Nam
+                                {% elseif userDetails.gender == -1 %}
+                                    &nbsp;Nữ
+                                {% else %}
+                                    &nbsp;Chưa cung cấp
+                                {% endif %}
+                                    </span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-calendar on-left fg-blue"></i>Ngày sinh:
+                                </div>
+                                <span class="profile-content-dob" id="dob">
+                                {{ userDetails.dob|date('d/m/Y') }}
+                                    </span>
+                                <span class="profile-content-age" id="age">
+                                {{ ' (' ~ ('now'|date('Y') - userDetails.dob|date('Y')) ~' tuổi)' }}
+                                    </span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-briefcase on-left fg-blue"></i>Nghề nghiệp:
+                                </div>
+                                <span class="profile-content" id="job">{{ userDetails.job }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-cabinet on-left fg-blue"></i>Đơn vị:</div>
+                                <span class="profile-content" id="office">{{ userDetails.office }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail" id="profile-address" style="line-height: 20px">
+                                <div class="profile-header"><i class="icon-home on-left fg-blue"></i>Nhà riêng:</div>
+                                Số
+                                <span class="profile-content" id="no">{{ userDetails.no }}</span>
+                                <span class="profile-content" id="street">{{ userDetails.street }}, </span>
+                                phường
+                                <span class="profile-content" id="ward">{{ userDetails.wardName }}</span>
+                                , Quận
+                                <span class="profile-content" id="dist">{{ userDetails.districtName }}</span>
+                                , Tỉnh/TP:
+                                <span class="profile-content" id="city">{{ userDetails.cityName }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-phone on-left fg-blue"></i>Điện thoại:</div>
+                                <span class="profile-content" id="phone">{{ userDetails.phone }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4>
+                                <div class="profile-header"><i class="icon-mail on-left fg-blue"></i>E-mail:</div>
+                                {{ userDetails.email }}
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-comments on-left fg-blue"></i>Tự giới thiệu:
+                                </div>
+                                <div class="balloon bottom"
+                                     style="min-height: 100px; max-width: 600px; margin-top: 25px; margin-left: 40px">
+                                    <div class="profile-shortDes"
+                                         style="font-style: italic;font-weight: bold"><span
+                                                class="profile-content-shortDes"
+                                                id="shortDes">{% if userDetails.shortDes != '' %}{{ userDetails.shortDes }}{% endif %}</span>
+                                        <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                                    </div>
+                                </div>
+                            </h4>
+                            {% if userLogged.id != userDetails.id %}
+                            <p style="text-align: center">
+                                <button class="button default" id="send-message"><span class="icon-mail on-left"></span>Nhắn tin
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button class="button primary"
+                                        onclick="userFollow({% if userLogged != 0 %}{{ userLogged.id }} {% else %} {{ 0 }}{% endif %}, {{ userDetails.id }})">
+                                    <span class="icon-alarm on-left"></span>Theo dõi
+                                </button>
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="span3">
+                            <img src="{{ userDetails.avatarUrl }}"
+                                 class="rounded polaroid profile-avatar">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="frame" id="_tab_activities">Chưa có hoạt động</div>
+                <div class="frame" id="_tab_inbox">Chưa có check-in</div>
+                <div class="frame" id="_tab_articles">Chưa có bài viết nào</div>
+                <div class="frame" id="_tab_entries">
+                    <div class="row">
+                        <div class="span9">
+                            {% if userDetails.id == userLogged.id %}
+                                <div class="entry-post">
+                                    <input type="text" id="entryTitle" placeholder="Tiêu đề">
+                                    <textarea id="entryContent" placeholder="Nội dung"></textarea>
+
+                                    <div id="button" class="place-right">
+                                        <button class="button primary small" id="entry-submit">Đăng entry</button>
+                                        <button class="button small" id="entry-reset">Hủy</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div id="entries">
+                                {% for entry in entries %}
+                                    <div class="entry">
+                                        <div class="entry-info">
+                                            <img class="avatar" src="{{ userDetails.avatarUrl }}">
+
+                                            <div class="right-info">
+                                                <span class="name"><strong>{{ userDetails.fname ~ ' ' ~ userDetails.lname }}</strong></span><br>
+                                                <span class="date">{{ 'Ngày ' ~ entry.date|date('d') ~ ' tháng ' ~ entry.date|date('m') ~ ' năm ' ~ entry.date|date('Y') ~ '  -   ' ~ entry.date|date('h:i') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="entry-title"><strong>{{ entry.title }}</strong></div>
+                                        <div class="entry-content">{{ entry.content }}</div>
+                                        <div class="fb-comments" data-href="http://tinhnguyen.besaba.com/users/detail"
+                                             data-width="100%" data-numposts="5" data-colorscheme="light"></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=429828337119218&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        {% if userLogged %}
+        $("#entry-reset").on('click', function() {
+            $("#entryTitle").val('');
+            $("#entryContent").val('');
+        });
+        $("#entry-submit").on('click', function () {
+            if ($("#entryTitle").val().length < 10)
+                $.Notify({style: {background: 'red', color: 'white'}, content: "Tiêu đề phải lớn hơn 10 kí tự"});
+            else if ($("#entryContent").val().length < 10)
+                $.Notify({style: {background: 'red', color: 'white'}, content: "Nội dung phải lớn hơn 10 kí tự"});
+            else {
+                $.post('{{ constant('URL') }}entries/addEntry',
+                        {
+                            userId: {{ userDetails.id }},
+                            title: $("#entryTitle").val(),
+                            content: $("#entryContent").val()
+                        }
+                ).done(function (data) {
+                            if (data) {
+                                $("#entries").prepend(
+                                '<div class="entry">' +
+                                        '<div class="entry-info">' +
+                                        '<img class="avatar" src="{{ userDetails.avatarUrl }}">' +
+                                        '<div class="right-info">' +
+                                        '<span class="name"><strong>{{ userDetails.fname ~ ' ' ~ userDetails.lname }}</strong></span><br>' +
+                                '<span class="date">Vừa mới đăng</span>' +
+                                '</div></div>' +
+                                '<div class="entry-title"><strong>' + $("#entryTitle").val() + '</strong></div>' +
+                                '<div class="entry-content">' + $("#entryContent").val() + '</div>' +
+                                '<div class="fb-comments" data-href="http://tinhnguyen.besaba.com/users/detail"' +
+                                'data-width="100%" data-numposts="5" data-colorscheme="light"></div>' +
+                                '</div>'
+                                );
+                                $("#entryTitle").val('');
+                                $("#entryContent").val('');
+                            }
+                            else {
+                                $.Notify({style: {background: 'red', color: 'white'}, content: "Có lỗi xảy ra, vui lòng thử lại"});
+                            }
+                        });
+            }
+        });
+        function userFollow(userId, friendId) {
+            if (userId == 0) {
+                $.Notify({style: {background: 'red', color: 'white'}, content: "Bạn phải đăng nhập để thực hiện chức năng này!"});
+            }
+            else {
+                $.post('../userFollow',
+                        {
+                            'userId': userId,
+                            'friendId': friendId
+                        }).done(function (data) {
+                            if (data == 0) {
+                                $.Notify({style: {background: 'red', color: 'white'}, content: "Bạn đã theo dõi người này"});
+                            }
+                            else {
+                                $.Notify({style: {background: 'green', color: 'white'}, content: "Đăng ký theo dõi thành công, bạn sẽ nhận thông báo về hoạt động của người này!"});
+                            }
+                        });
+            }
+        }
+
+        $("#send-message").on('click', function() {
+            $.Dialog({
+                overlay: true,
+                shadow: true,
+                flat: true,
+                draggable: true,
+                icon: '<span class = "icon-mail on-left">',
+                content: '',
+                padding: 10,
+                onShow: function (_dialog) {
+                    var content = '<label>Tiêu đề:</label><input type="text" id="message-title" size="50">' +
+                                    '<label>Nội dung:</label><textarea id="message-body"></textarea>' +
+                                    '<p class="message-button"><center><button class="button primary" id="button-send">Gửi</button>' +
+                                    '&nbsp;&nbsp;<button class="button" onclick="$.Dialog.close()">Hủy</button></center></p>'
+                            ;
+                    $.Dialog.title("Gửi tin nhắn");
+                    $.Dialog.content(content);
+                }
+            });
+            $("#button-send").on('click', function() {
+                if ($("#message-title").val().length < 10)
+                alert("Tiêu đề tin nhắn phải lớn hơn 10 kí tự");
+                else if ($("#message-body").val() < 10)
+                alert("Nội dung tin nhắn phải lớn hơn 10 kí tự")
+                else {
+                    $.post('{{ constant('URL') }}message/sendMessage',
+                            {
+                                senderId: {{ userLogged.id }},
+                                receiverId: {{ userDetails.id }},
+                                messageTitle: $("#message-title").val(),
+                                messageBody: $("#message-body").val()
+                            }).done(function(status, data) {
+                                if (status == 'success' && data == 1) {
+                                    $.Dialog.close();
+                                }
+                                else {
+                                    alert("Có lỗi xảy ra khi gửi tin nhắn, vui lòng kiểm tra lại!")
+                                }
+                            });
+                }
+            });
+        })
+        {% endif %}
+
+    </script>
+{% endblock %}

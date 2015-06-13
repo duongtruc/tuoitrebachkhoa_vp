@@ -1,0 +1,54 @@
+<script src="{{ constant('URL') }}public/uploader/jquery-ui.min.js"></script>
+<script src="{{ constant('URL') }}public/uploader/plupload.full.min.js"></script>
+<script src="{{ constant('URL') }}public/uploader/jquery.ui.plupload.js"></script>
+<script src="{{ constant('URL') }}public/uploader/moxie.min.js"></script>
+<link rel="stylesheet" href="{{ constant('URL') }}public/uploader/css/jquery.ui.plupload.css" type="text/css">
+<link rel="stylesheet" href="{{ constant('URL') }}public/uploader/css/jquery-ui.min.css" type="text/css">
+<div id="uploader">
+    <p>Trình duyệt không hỗ trợ Flash, Silverlight hay HTML5</p>
+</div>
+<script type="text/javascript">
+    // Initialize the widget when the DOM is ready
+    $(function () {
+        $("#uploader").plupload({
+            // General settings
+            runtimes: 'html5,flash,silverlight,html4',
+            url: "{{ constant('URL') }}uploader/upload?type={{ type }}",
+            // Maximum file size
+            max_file_size: '1mb',
+            chunk_size: '100kb',
+            // Resize images on clientside if we can
+            resize: {
+                width: 200,
+                height: 200,
+                quality: 90,
+                crop: true // crop to exact dimensions
+            },
+            // Specify what files to browse for
+            filters: [
+                {title: "Image files", extensions: "jpg,gif,png, jpeg"}
+            ],
+            // Rename files by clicking on their titles
+            rename: true,
+
+            // Sort files
+            sortable: true,
+            // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+            dragdrop: true,
+            // Views to activate
+            views: {
+                list: true,
+                thumbs: true, // Show thumbs
+                active: 'thumbs'
+            }
+            // Flash settings
+            //flash_swf_url: 'Moxie.swf',
+
+            // Silverlight settings
+            // silverlight_xap_url: 'Moxie.xap'
+        });
+        /*$("clearImage").on('click', function () {
+            alert($("#uploader").getFiles());
+        });*/
+    });
+</script>

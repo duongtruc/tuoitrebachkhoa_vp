@@ -1,0 +1,155 @@
+[
+    {
+        "name": "leafo/scssphp",
+        "version": "v0.0.9",
+        "version_normalized": "0.0.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/leafo/scssphp.git",
+            "reference": "a06d702ebf9fabb22542bbb27cc12a905813bb6d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/leafo/scssphp/zipball/a06d702ebf9fabb22542bbb27cc12a905813bb6d",
+            "reference": "a06d702ebf9fabb22542bbb27cc12a905813bb6d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.0"
+        },
+        "require-dev": {
+            "php": ">=5.3.0",
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2013-12-23 23:28:02",
+        "bin": [
+            "pscss"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "scss.inc.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT",
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Leaf Corcoran",
+                "email": "leafot@gmail.com",
+                "homepage": "http://leafo.net"
+            }
+        ],
+        "description": "scssphp is a compiler for SCSS written in PHP.",
+        "homepage": "http://leafo.net/scssphp/"
+    },
+    {
+        "name": "panique/laravel-sass",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/panique/laravel-sass.git",
+            "reference": "d81e4c23edf53ccbb93378d1ef815e4ed3ce8112"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/panique/laravel-sass/zipball/d81e4c23edf53ccbb93378d1ef815e4ed3ce8112",
+            "reference": "d81e4c23edf53ccbb93378d1ef815e4ed3ce8112",
+            "shasum": ""
+        },
+        "require": {
+            "leafo/scssphp": "v0.0.9",
+            "php": ">=5.3.0"
+        },
+        "time": "2014-07-04 20:35:34",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "sass-compiler.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Panique",
+                "homepage": "http://careers.stackoverflow.com/panique",
+                "role": "Developer"
+            }
+        ],
+        "description": "Compiles your SASS .scss files to .css every time you run your app (in development)",
+        "homepage": "https://github.com/panique/laravel-sass",
+        "keywords": [
+            "css",
+            "sass",
+            "scss"
+        ]
+    },
+    {
+        "name": "twig/twig",
+        "version": "v1.16.0",
+        "version_normalized": "1.16.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/fabpot/Twig.git",
+            "reference": "8ce37115802e257a984a82d38254884085060024"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/fabpot/Twig/zipball/8ce37115802e257a984a82d38254884085060024",
+            "reference": "8ce37115802e257a984a82d38254884085060024",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.4"
+        },
+        "time": "2014-07-05 12:19:05",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.16-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Twig_": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Armin Ronacher2",
+                "email": "armin.ronacher@active-4.com",
+                "role": "Project Founder"
+            },
+            {
+                "name": "Twig Team",
+                "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
+                "role": "Contributors"
+            }
+        ],
+        "description": "Twig, the flexible, fast, and secure template language for PHP",
+        "homepage": "http://twig.sensiolabs.org",
+        "keywords": [
+            "templating"
+        ]
+    }
+]

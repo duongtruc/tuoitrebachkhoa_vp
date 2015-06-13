@@ -1,0 +1,49 @@
+<script>
+    $(function () {
+        $("#userLoginButton").on('click', function () {
+            $.Dialog({
+                overlay: true,
+                shadow: true,
+                flat: true,
+                draggable: true,
+                icon: '<span class = "icon-key-2">',
+                title: 'Flat window',
+                content: '',
+                padding: 10,
+                onShow: function (_dialog) {
+                    var content = '<form class="user-input" action = "{{ constant('URL') }}users/userLogin/" method="POST">' +
+                            '<label for = "email">Email</label>' +
+                            '<div class="input-control text"><input type="text" name="email" tabindex="1" autofocus="1" size="40"><button class="btn-clear"></button></div>' +
+                            '<label for = "password">Mật khẩu</label>' +
+                            '<div class="input-control password"><input type="password" onkeypress="login()" name="password" tabindex="2"><button class="btn-reveal"></button></div>' +
+                        //TODO absolute path?
+                            '<div class="form-actions">' +
+                            '<button class="button primary" tabindex="3">Đăng nhập</button>&nbsp;&nbsp;' +
+                            '<button class="button" type="button" onclick="$.Dialog.close()">Cancel</button>&nbsp;&nbsp;' +
+                            '</div>' +
+                            '</form>';
+
+                    $.Dialog.title("Đăng nhập");
+                    $.Dialog.content(content);
+                }
+            });
+        });
+    });
+    function checkPassword(pass) {
+        if (pass.length < 6) {
+            document.getElementById('pwStatus').innerHTML = "<p style='color: #ff0000'><b>" + "Mật khẩu phải lớn hơn 6 kí tự" + "</b></p>";
+        }
+        else {
+            document.getElementById('pwStatus').innerHTML = "<p style='color: green'><b>" + "OK" + "</b></p>";
+        }
+    }
+
+    function checkPasswordSame(pass, passCopy) {
+        if (pass == passCopy) {
+            document.getElementById('pwStatus').innerHTML = "<p style='color: green'><b>" + "Mật khẩu trùng khớp" + "</b></p>";
+        }
+        else {
+            document.getElementById('pwStatus').innerHTML = "<p style='color: #ff0000'><b>" + "Mật khẩu chưa trùng khớp" + "</b></p>";
+        }
+    }
+</script>

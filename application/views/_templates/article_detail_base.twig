@@ -1,0 +1,28 @@
+{% for article in newArticles %}
+    <div style="float: left; width: 325px; height: 170px; margin-right: 5px; margin-bottom: 5px; border: 1px solid whitesmoke">
+        <a href="{{ constant('URL') ~'articles/detail/' ~ article.id }}">
+            <p style="font-size: 18px; color: #000000; margin: 2px">
+                <strong>{{ article.title|length > 60?article.title|slice(0, 60)~'...':article.title }}</strong>
+                {% if article.commentTotal>0 %}
+                    <span style="color: #9a1616; font-size: 16px">
+                                            <span style="font-size: 20px" class="icon-comments-2"></span>
+                        {{ article.commentTotal }}
+                                        </span>
+                {% endif %}
+                {% if article.FBShare + article.GPlusShare > 0 %}
+                    <span style="color: #9a1616; font-size: 16px">
+                                            <span style="font-size: 20px" class="icon-share-3"></span>
+                        {{ article.FBShare + article.GPlusShare }}
+                                        </span>
+                {% endif %}
+            </p>
+        </a>
+        <div style="float: left">
+            <img style="width: 90px; height: 90px"
+                 src="{{ constant('URL') ~'public/img/' ~ article.imageUrl }}">
+        </div>
+        <div style="font-size: 13px; color: #000000; margin-left: 100px">
+            {{ article.sumary|length > 200?article.sumary|slice(0, 200)~'...':article.sumary }}
+        </div>
+    </div>
+{% endfor %}

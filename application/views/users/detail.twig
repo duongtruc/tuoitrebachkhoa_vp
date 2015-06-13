@@ -1,0 +1,156 @@
+{% extends "_templates/home_base.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ constant('URL') }}public/js/application/profile-edit.js"></script>
+    <script src="{{ constant('URL') }}public/js/application/userDetail.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="grid" style="margin-top: 40px">
+        <div class="tab-control" data-role="tab-control">
+            <ul class="tabs">
+                <li {% if tab == 'profile' %}class="active"{% endif %}><a href="#_tab_profile"><i class="icon-user-2"></i>&nbsp;Hồ sơ thành viên</a></li>
+                <li {% if tab == 'activities' %}class="active"{% endif %}><a href="#_tab_activities"><i class="icon-calendar"></i>&nbsp;Hoạt động thành viên</a></li>
+                <li {% if tab == 'check-in' %}class="active"{% endif %}><a href="#_tab_places"><i class="icon-location-2"></i>&nbsp;Checked in</a></li>
+                <li {% if tab == 'articles' %}class="active"{% endif %}><a href="#_tab_articles"><i class="icon-newspaper"></i>&nbsp;Bài viết</a></li>
+                <li {% if tab == 'entries' %}class="active"{% endif %}><a href="#_tab_entries"><i class="icon-blogger"></i>&nbsp;Blog</a></li>
+            </ul>
+            <style type="text/css" scoped="scoped">
+                .profile-name {
+                    font-style: oblique;
+                }
+
+                .profile-header {
+                    margin-left: 20px;
+                    text-decoration: underline;
+                    display: inline;
+                    clear: both;
+                }
+
+                .profile-shortDes {
+                    padding: 20px;
+                    line-height: 40px;
+                    color: #00356a;
+
+                }
+
+                .profile-avatar {
+                    width: 220px;
+                    height: 300px;
+                }
+
+                sup {
+                    display: inline-block;
+                    color: #1e347b;
+                    font-size: 14px;
+                    margin: 2px;
+                }
+
+                .profile-content {
+                    display: inline;
+                }
+
+                .profile-edit {
+                    display: none;
+                    cursor: pointer;
+                }
+            </style>
+            <div class="frames">
+                <div class="frame" id="_tab_profile">
+                    <div class="row">
+                        <div class="span9">
+                            <input type="hidden" id="owner"
+                                   value="{% if userLogged.id == userDetails.id %}1{% else %}0{% endif %}">
+
+                            <h3 class="profile-name profile-detail"
+                                style="color: #0050ef">
+                                <span class="profile-content" id="fname">{{ userDetails.fname }}&nbsp;</span>
+                                <span class="profile-content" id="lname">{{ userDetails.lname }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup></h3>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-user-2 on-left fg-blue"></i>Giới tính:</div>
+                                <span class="profile-content-gender" id="gender">
+                                {% if userDetails.gender == 1 %}
+                                    &nbsp;Nam
+                                {% elseif userDetails.gender == -1 %}
+                                    &nbsp;Nữ
+                                {% else %}
+                                    &nbsp;Chưa cung cấp
+                                {% endif %}
+                                    </span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-calendar on-left fg-blue"></i>Ngày sinh:
+                                </div>
+                                <span class="profile-content-dob">
+                                {{ userDetails.dob|date('d/m/Y') ~ ' (' ~ ('now'|date('Y') - userDetails.dob|date('Y')) ~' tuổi)' }}
+                                    </span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-briefcase on-left fg-blue"></i>Nghề nghiệp:
+                                </div>
+                                <span class="profile-content" id="job">{{ userDetails.job }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-cabinet on-left fg-blue"></i>Đơn vị:</div>
+                                <span class="profile-content" id="office">{{ userDetails.office }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail" id = "profile-address" style="line-height: 20px">
+                                <div class="profile-header"><i class="icon-home on-left fg-blue"></i>Nhà riêng:</div>
+                                Số
+                                <span class="profile-content" id = "no">{{ userDetails.no }}</span>
+                                <span class="profile-content" id = "street">{{ userDetails.street }}</span>
+                                phường
+                                <span class="profile-content" id = "ward">{{ userDetails.ward }}</span>
+                                , Quận
+                                <span class="profile-content" id = "dist">{{ userDetails.dist }}</span>
+                                , Tỉnh/TP:
+                                <span class="profile-content" id = "city">{{ userDetails.city }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-phone on-left fg-blue"></i>Điện thoại:</div>
+                                <span class="profile-content" id="phone">{{ userDetails.phone }}</span>
+                                <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                            </h4>
+                            <h4>
+                                <div class="profile-header"><i class="icon-mail on-left fg-blue"></i>E-mail:</div>
+                                {{ userDetails.email }}
+                            </h4>
+                            <h4 class="profile-detail">
+                                <div class="profile-header"><i class="icon-comments on-left fg-blue"></i>Tự giới thiệu:
+                                </div>
+                                <div class="balloon bottom"
+                                     style="min-height: 100px; max-width: 600px; margin-top: 25px; margin-left: 40px">
+                                    <div class="profile-shortDes"
+                                         style="font-style: italic;font-weight: bold"><span
+                                                class="profile-content-shortDes"
+                                                id="shortDes">{% if userDetails.shortDes != '' %}{{ userDetails.shortDes }}{% endif %}</span>
+                                        <sup class='profile-edit'><span class="icon-pencil on-right"></span></sup>
+                                    </div>
+                                </div>
+                            </h4>
+                            <p style="text-align: center">
+                                <button class="button large primary" onclick="userFollow({% if userLogged != 0 %}{{ userLogged.id }} {% else %} {{ 0 }}{%  endif %}, {{ userDetails.id }})"><span class="icon-alarm on-left"></span>Theo dõi</button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button class="button large default"><span class="icon-mail on-left"></span>Nhắn tin </button>
+                            </p>
+                        </div>
+                        <div class="span3">
+                            <img src="{{ constant('URL') ~ 'public/img/' ~ userDetails.imageUrl }}"
+                                 class="rounded polaroid profile-avatar">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="frame" id="_tab_activities">Frame2</div>
+                <div class="frame" id="_tab_places">Frame3</div>
+                <div class="frame" id="_tab_articles">Frame4</div>
+                <div class="frame" id="_tab_entries">Frame5</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

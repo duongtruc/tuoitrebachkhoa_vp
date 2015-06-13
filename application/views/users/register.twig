@@ -1,0 +1,64 @@
+{% extends "_templates/home_base.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ constant('URL') }}public/js/application/userRegister.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="grid" style="margin-top: 40px">
+        <nav class="breadcrumbs small">
+            <ul>
+                <li><a href="{{ constant('URL') }}home"><i class="icon-home"></i></a></li>
+                <li><a href="#">Đăng ký</a></li>
+            </ul>
+        </nav>
+        <div class="example" id="content" style="margin-top: 20px">
+            <fieldset>
+                <legend>Đăng kí</legend>
+                <label>Họ</label>
+
+                <div class="input-control text" data-role="input-control">
+                    <input type="text" name="fname" id="fname" tabindex="1" autofocus="" required>
+                    <button class="btn-clear"></button>
+                </div>
+                <label>Tên lót - Tên</label>
+
+                <div class="input-control text" data-role="input-control">
+                    <input type="text" name="lname" id="lname" tabindex="2" required>
+                    <button class="btn-clear"></button>
+                </div>
+                <label>Email: </label>
+
+                <div class="input-control text" data-role="input-control">
+                    <input type="email" name="email" id="email" tabindex="3" required>
+                    <button class="btn-clear"></button>
+                </div>
+                <label>Password: </label>
+
+                <div class="input-control password" data-role="input-control">
+                    <input type="password" tabindex="4" id="password" name="password" id="password"
+                           onkeyup="checkPassword(this.value)" required>
+                    <button class="btn-reveal"></button>
+                    <div id="pwStatus"></div>
+                </div>
+                <label>Nhập lại password: </label>
+
+                <div class="input-control password" data-role="input-control">
+                    <input type="password" tabindex="5"
+                           onkeyup="checkPasswordSame(this.value, document.getElementById('password').value)"
+                           name="repassword" required>
+                    <button class="btn-reveal"></button>
+                    <div id="confirmPwStatus"></div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <button class="button success" id="submit">Đăng ký</button>
+                        <div id="loadImage" style="width: 30%; height: 30%">
+                        </div>
+                    </div>
+                    <div class="span2"><input type="reset" value="Xóa"></div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+{% endblock %}
+

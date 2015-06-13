@@ -1,0 +1,125 @@
+{% extends "_templates/home_base.twig" %}
+{% block content %}
+    <script src="{{ constant('URL') }}public/js/jquery/jquery.wallform.js"></script>
+    <div class="main-content clearfix">
+        <div class="grid">
+            <div class="row">
+                <div class="span12">
+                    {% if userLogged.level == 1 %}
+                        <div>
+                            <button id="d-upload-button" class="button primary large">Tạo kì báo cáo</button>
+                            <div id="d-upload"
+                                 style="display: none; border: 1px dashed #777777; padding: 10px; margin: 10px">
+                                <label for="d-name">Tên</label>
+                                <input id="d-name" type="text" size="60">
+                                <label for="d-date">Ngày hết hạn</label>
+                                <input id="d-date" type="datetime-local">
+                                <label for="d-summary">Mô tả</label>
+                                <textarea id="d-summary" style="width: 100%; height: 200px"></textarea>
+                                <!-- Image -->
+                                <label>File đính kèm</label>
+
+                                <div id='preview'>
+                                </div>
+                                <form id="imageform" method="post" enctype="multipart/form-data"
+                                      action='{{ constant('URL') }}uploader/userUpload?type=report' style="clear:both">
+                                    <div id='imageloadstatus' style='display:none'><img
+                                                src="{{ constant('URL') }}public/img/loader.gif"
+                                                alt="Đang tải lên...."/></div>
+                                    <div id='imageloadbutton'>
+                                        <input type="file" name="photos[]" id="photoimg" multiple="true"/>
+                                    </div>
+                                </form>
+                                <!--End image -->
+                                <button class="button primary" id="submit">Tạo</button>
+                                <button class="button" id="reset">Hủy</button>
+                            </div>
+                        </div>
+                        <div class="margin20"></div>
+                    {% endif %}
+                    {% if stages|length > 0 %}
+                        <table>
+                            <tr>
+                                <td>Kỳ báo cáo</td>
+                                <td>Ngày hết hạn</td>
+                                <td>Mô tả</td>
+                                <td>File đính kèm</td>
+                                <td>Tình trạng</td>
+                            </tr>
+                            {% for stage in stages %}
+                                <tr>
+                                    <td>{{ stage.stagename }}</td>
+                                    <td>{{ stage.expiredate|date('d-m-Y h:i') }}</td>
+                                    <td>{{ stage.description }}</td>
+                                    <td>
+                                        {% if stage.fileurl|length > 0 %}
+                                            <a href="{{ constant('URL') }}public/{{stage.fileurl }}">Tải xuống</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>Đã phản hồi</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <h3>Không có kỳ báo cáo nào</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .file-icon {
+            text-align: center;
+        }
+
+        .file-icon i {
+            font-size: 80px;
+            color: #0016b0;
+            margin: 10px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#d-upload-button").on('click', function () {
+                $("#d-upload").fadeToggle();
+            });
+            $("#reset").on('click', function () {
+                $("#d-upload").fadeToggle();
+            });
+            $("#submit").on('click', function () {
+                $.post('{{ constant('URL') }}report/newStage',
+                        {
+                            'd-name': $("#d-name").val(),
+                            'd-date': $("#d-date").val(),
+                            'd-summary': $("#d-summary").val()
+                        }).done(function (data) {
+                            if (data == '1') {
+                                location.reload();
+                            }
+                            else {
+                                alert('Có lỗi xảy ra!');
+                            }
+                        })
+            });
+        })
+        /*image upload*/
+        $('#photoimg').on('change', function () {
+            $("#imageform").ajaxForm({target: '#preview',
+                beforeSubmit: function () {
+                    $("#imageloadstatus").show();
+                    $("#imageloadbutton").hide();
+                },
+                success: function () {
+                    $("#imageloadstatus").hide();
+                    $("#imageloadbutton").show();
+                },
+                error: function () {
+                    $("#imageloadstatus").hide();
+                    $("#imageloadbutton").show();
+                } }).submit();
+
+
+        });
+        /*end image upload*/
+    </script>
+{% endblock %}

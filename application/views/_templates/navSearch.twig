@@ -1,0 +1,78 @@
+<script>
+    $(function () {
+        $("#txt-search").on('keyup', function () {
+            $(".search-result  ul").html('');
+            if ($(this).val() == '') {
+                $(".search-result").css('display', 'none');
+            }
+            else {
+                $.get('{{ constant("URL")}}navSearch/articleSearch/?query=' + $("#txt-search").val())
+                        .done(function (data) {
+                            var obj = JSON.parse(data);
+                            var length = obj.length;
+                            if (length > 0) {
+                                $(".search-result").css('display', 'block');
+                                $(".search-result ul.result-wrapper").append('<li class="result-article"><div class = "category">Bài viết</div><ul>');
+                                for (var i = 0; i < length; i++) {
+                                    $(".search-result  ul.result-wrapper  li.result-article  ul").append('<li><a href="{{ constant('URL')}}articles/detail/' + obj[i].id + '"><img src="{{constant('URL')}}public/img/'
+                                            + obj[i].imageUrl + '"class="search-thumbnail"/>'
+                                            + obj[i].title.substr(0, 32) + '</a></li>');
+                                }
+                                $(".search-result  ul.result-wrapper").append('</ul></li>');
+                            }
+                        });
+
+                $.get('{{ constant("URL")}}navSearch/userSearch/?query=' + $("#txt-search").val())
+                        .done(function (data) {
+                            var obj = JSON.parse(data);
+                            var length = obj.length;
+                            if (length > 0) {
+                                $(".search-result").css('display', 'block');
+                                $(".search-result ul.result-wrapper").append('<li class="result-user"><div class = "category">Tài khoản</div><ul>');
+                                for (var i = 0; i < length; i++) {
+                                    $(".search-result  ul.result-wrapper li.result-user  ul").append('<li><a href="{{ constant('URL')}}users/detail/' + obj[i].id + '"><img src="{{constant("URL")}}public/img/'
+                                            + obj[i].imageUrl + '"class="search-thumbnail"/>'
+                                            + obj[i].fullname + ' - ' + obj[i].userGroup + '</a></li>');
+                                }
+                                $(".search-result  ul.result-wrapper").append('</ul></li>');
+                            }
+                        });
+
+                $.get('{{ constant("URL")}}navSearch/placeSearch/?query=' + $("#txt-search").val())
+                        .done(function (data) {
+                            var obj = JSON.parse(data);
+                            var length = obj.length;
+                            if (length > 0) {
+                                $(".search-result").css('display', 'block');
+                                $(".search-result ul.result-wrapper").append('<li class="result-place"><div class = "category">Cơ sở</div><ul>');
+                                for (var i = 0; i < length; i++) {
+                                    $(".search-result  ul.result-wrapper li.result-place  ul").append('<li><a href="{{ constant('URL')}}places/detail/' + obj[i].id + '"><img src="{{constant("URL")}}public/img/'
+                                            + obj[i].imageUrl + '"class="search-thumbnail"/>'
+                                            + obj[i].name.substr(0, 32) + '</a></li>');
+                                }
+                                $(".search-result  ul.result-wrapper").append('</ul></li>');
+                            }
+                        });
+
+                $.get('{{ constant("URL")}}navSearch/activitySearch/?query=' + $("#txt-search").val())
+                        .done(function (data) {
+                            var obj = JSON.parse(data);
+                            var length = obj.length;
+                            if (length > 0) {
+                                $(".search-result").css('display', 'block');
+                                $(".search-result ul.result-wrapper").append('<li class="result-activity"><div class = "category">Hoạt động</div><ul>');
+                                for (var i = 0; i < length; i++) {
+                                    $(".search-result  ul.result-wrapper li.result-activity  ul").append('<li><a href="{{ constant('URL')}}activities/detail/' + obj[i].id + '"><img src="{{constant("URL")}}public/img/'
+                                            + obj[i].imageUrl + '"class="search-thumbnail"/>'
+                                            + obj[i].name.substr(0, 32) + '...</a></li>');
+                                }
+                                $(".search-result  ul.result-wrapper").append('</ul></li>');
+                            }
+                        });
+            }
+
+        });
+
+    })
+
+</script>

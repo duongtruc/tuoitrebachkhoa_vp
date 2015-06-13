@@ -1,0 +1,151 @@
+{% extends "_templates/home_base.twig" %}
+{% block content %}
+    <script src="{{ constant('URL') }}public/js/jquery/jquery.wallform.js"></script>
+    <div class="main-content clearfix">
+        <div class="grid">
+            <div class="row">
+                <div class="span9">
+                    {% if userLogged.level == 1 %}
+                        <div>
+                            <button id="d-upload-button" class="button primary large">Upload tài liệu</button>
+                            <div id="d-upload"
+                                 style="display: none; border: 1px dashed #777777; padding: 10px; margin: 10px">
+                                <label for="d-name">Tên văn bản</label>
+                                <input id="d-name" type="text" size="60">
+                                <label for="d-no">Số hiệu văn bản</label>
+                                <input id="d-no" type="text" size="20">
+                                <label for="d-summary">Mô tả</label>
+                                <textarea id="d-summary" style="width: 100%; height: 200px"></textarea>
+                                <!-- Image -->
+                                <label>Upload file</label>
+
+                                <div id='preview'>
+                                </div>
+                                <form id="imageform" method="post" enctype="multipart/form-data"
+                                      action='{{ constant('URL') }}uploader/userUpload?type=documents' style="clear:both">
+                                    <div id='imageloadstatus' style='display:none'><img
+                                                src="{{ constant('URL') }}public/img/loader.gif"
+                                                alt="Đang tải lên...."/></div>
+                                    <div id='imageloadbutton'>
+                                        <input type="file" name="photos[]" id="photoimg" multiple="true"/>
+                                    </div>
+                                </form>
+                                <!--End image -->
+                                <button class="button primary" id="submit">Upload</button>
+                                <button class="button" id="reset">Hủy</button>
+                            </div>
+                        </div>
+                        <div class="margin20"></div>
+                    {% endif %}
+                    {% for document in documents %}
+                        <a href="#" title="{{ document.summary }}">
+                            <div class="article-vertical col4" style="height: 210px">
+                                <p class="file-icon"><i class="icon-file-word on-left"></i></p>
+
+                                <div class="entry-content">
+                                    <p>{{ document.name }}</p>
+                                    <center>
+                                    <a href="#" class="viewer">Xem</a> |
+                                    <a href="{{ constant('URL') }}public/{{ document.url }}" class="read-more">Tải
+                                        xuống</a>
+                                    </center>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="span4">
+                    <div class="panel">
+                        <div class="panel-header">
+                            Danh mục tài liệu
+                        </div>
+                        <div class="panel-content">
+                            <ul>
+                                {% for type in documentTypes %}
+                                    <li>{{ type.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .file-icon {
+            text-align: center;
+        }
+
+        .file-icon i {
+            font-size: 80px;
+            color: #0016b0;
+            margin: 10px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#d-upload-button").on('click', function () {
+                $("#d-upload").fadeToggle();
+            });
+            $("#reset").on('click', function () {
+                $("#d-upload").fadeToggle();
+            });
+            $("#submit").on('click', function () {
+                $.post('{{ constant('URL') }}documents/uploadNew',
+                        {
+                            'd-name': $("#d-name").val(),
+                            'd-no': $("#d-no").val(),
+                            'd-summary': $("#d-summary").val()
+                        }).done(function (data) {
+                            if (data == '1') {
+                                location.reload();
+                            }
+                            else {
+                                alert('Có lỗi xảy ra!');
+                            }
+                        })
+            });
+        })
+        /*image upload*/
+        $('#photoimg').on('change', function () {
+            $("#imageform").ajaxForm({target: '#preview',
+                beforeSubmit: function () {
+                    $("#imageloadstatus").show();
+                    $("#imageloadbutton").hide();
+                },
+                success: function () {
+                    $("#imageloadstatus").hide();
+                    $("#imageloadbutton").show();
+                },
+                error: function () {
+                    $("#imageloadstatus").hide();
+                    $("#imageloadbutton").show();
+                } }).submit();
+
+
+        });
+        /*end image upload*/
+        $(function () {
+            $(".viewer").on('click', function () {
+                $.Dialog({
+                    overlay: true,
+                    shadow: true,
+                    flat: true,
+                    draggable: true,
+                    icon: '<span class = "icon-folder">',
+                    title: 'Xem trước',
+                    content: '',
+                    padding: 10,
+                    onShow: function (_dialog) {
+                        var content = '<iframe src="http://docs.google.com/gview?url='
+                                + $(".entry-content :nth-child(3)").attr('href') +
+                                '&embedded=true" style="width:800px; height:500px;" frameborder="0"></iframe>';
+                        $.Dialog.title("Xem trước");
+                        $.Dialog.content(content);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

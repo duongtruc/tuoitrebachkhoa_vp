@@ -1,0 +1,146 @@
+{% extends "_templates/home_base.twig" %}
+{% block content %}
+    {% set type = 'articles' %}
+    <script src="//cdn.ckeditor.com/4.4.4/standard/ckeditor.js"></script>
+    <script src="{{ constant('URL') }}public/js/jquery/jquery.wallform.js"></script>
+    <div class="main-content clearfix">
+        <nav class="breadcrumbs small">
+            <ul>
+                <li><a href="{{ constant('URL') }}home"><i class="icon-home"></i></a></li>
+                <li><a href="{{ constant('URL') }}places">Bài viết</a></li>
+                <li><a href="{{ constant('URL') }}places/providePlace">Chia sẻ bài viết</a></li>
+            </ul>
+        </nav>
+        <div class="grid">
+            <div class="row">
+                <div class="span12">
+                    <fieldset>
+                        <legend><strong>Đăng bài viết mới</strong></legend>
+                        <label for="title">Tiêu đề bài viết (*)</label>
+
+                        <div class="input-control text" data-role="input-control">
+                            <input type="text" id="title" tabindex="1" autofocus="" required>
+                            <button class="btn-clear"></button>
+                        </div>
+                        <label for="detail">Nội dung (*)</label>
+
+                        <div class="input-control textarea" id="ckeditorArea" data-role="input-control">
+                            <textarea id="detail"></textarea>
+                        </div>
+                        <!-- Image -->
+                        <label>Upload hình ảnh</label>
+
+                        <div id='preview'>
+                        </div>
+                        <form id="imageform" method="post" enctype="multipart/form-data"
+                              action='{{ constant('URL') }}uploader/userUpload?type={{ type }}' style="clear:both">
+                            <div id='imageloadstatus' style='display:none'><img
+                                        src="{{ constant('URL') }}public/img/loader.gif"
+                                        alt="Đang tải lên...."/></div>
+                            <div id='imageloadbutton'>
+                                <input type="file" name="photos[]" id="photoimg" multiple="true"/>
+                            </div>
+                        </form>
+                        <!--End image -->
+                        <p>
+                            Tác giả:
+                            <input type="text" id="author" tabindex="2">
+                            &nbsp;&nbsp;
+                            Nguồn tin:
+                            <input type="text" id="source" tabindex="2">
+                        </p>
+                        {% include '_templates/captcha.twig' %}
+                        <br>
+                        <button class="button large default" id="submit">Đăng bài viết</button>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            {% if userLogged == 0 %}
+            $.Dialog({
+                overlay: true,
+                shadow: true,
+                flat: true,
+                draggable: true,
+                icon: '<span class = "icon-info">',
+                title: 'Flat window',
+                content: '',
+                padding: 10,
+                onShow: function (_dialog) {
+                    $.Dialog.title("Thông báo");
+                    $.Dialog.content('<p>Bạn chưa đăng nhập hệ thống, <br>' +
+                            'hệ thống sẽ không lưu dữ liệu về người cung cấp <br>' +
+                            'khi bạn cập nhật thông tin với vai trò là khách.</p><br>' +
+                            '<a class="button primary large" id="cancel-button">' +
+                            '<i class="icon-checkmark on-left"></i>Tôi hiểu, tiếp tục với vai trò khách</a>');
+                }
+            });
+            $("#cancel-button").on('click', function () {
+                $.Dialog.close();
+            });
+            {% endif %}
+            $.Metro.initInputs();
+            $('#photoimg').on('change', function () {
+                $("#imageform").ajaxForm({target: '#preview',
+                    beforeSubmit: function () {
+                        $("#imageloadstatus").show();
+                        $("#imageloadbutton").hide();
+                    },
+                    success: function () {
+                        $("#imageloadstatus").hide();
+                        $("#imageloadbutton").show();
+                    },
+                    error: function () {
+                        $("#imageloadstatus").hide();
+                        $("#imageloadbutton").show();
+                    } }).submit();
+
+
+            });
+            $("#submit").on('click', function () {
+                checkCaptcha(function (result) {
+                    if (result == 1) {
+                        var sentData = {
+                            title: $("#title").val(),
+                            thumbnail: $("input[name = 'thumbnail']:checked").val(),
+                            details: editor.getData(),
+                            author: $("#author").val(),
+                            source: $("#source").val()
+                        };
+                        var dataValidate = true;
+                        for (var element in sentData) {
+                            if (!element.length) {
+                                $.Notify({style: {background: 'red', color: 'white'}, content: "Vui lòng nhập đủ thông tin"});
+                                dataValidate = false;
+                                break;
+
+                            }
+                        }
+                        if (dataValidate) {
+                            $.post("{{ constant('URL')}}articles/addArticle", sentData
+                                    , function (data) {
+                                        if (data == 1) {
+                                            $.post("{{ constant('URL')}}uploader/endAlbum");
+                                            $.Notify({style: {background: 'green', color: 'white'}, content: "Đăng bài viết thành công"});
+                                            setInterval(function() {
+                                                location.reload();
+                                            }, 2000);
+                                        }
+                                        else {
+                                            $.Notify({style: {background: 'red', color: 'white'}, content: "Có lỗi xảy ra"});
+                                        }
+                                    });
+                        }
+                    } else {
+                        alert('Mã chống spam không đúng');
+                    }
+                });
+            });
+
+            var editor = CKEDITOR.replace('detail');
+        })
+    </script>
+{% endblock %}

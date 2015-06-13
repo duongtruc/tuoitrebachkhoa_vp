@@ -1,0 +1,68 @@
+{% extends "_templates/home_base.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <div class="margin20">
+    <div class="margin20">
+    <div class="grid">
+        <div class="row">
+            <strong><center><h2>CỔNG DỊCH VỤ VĂN PHÒNG ĐOÀN TRƯỜNG</h2></center></strong>
+        </div>
+        <div class="row">
+            <div class="span4 vp-feature">
+                <a href="{{ constant('URL') }}documents/">
+                    <p>VĂN BẢN - TÀI LIỆU</p>
+                    <span class="icon-file-2"></span>
+                </a>
+            </div>
+            <div class="span4 vp-feature">
+                <a href="{{ constant('URL') }}report/">
+                    <p>BÁO CÁO ĐỊNH KÌ</p>
+                    <span class="icon-bell"></span>
+                </a>
+            </div>
+            <div class="span4 vp-feature">
+                <a href="{{ constant('URL') }}checklist/">
+                    <p>ĐIỂM DANH</p>
+                    <span class="icon-checkmark"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <style>
+        .vp-feature {
+            text-align: center;
+            font-size: 120px;
+            border-top: 1px dashed #00356a;
+            margin-top: 20px;
+            padding: 20px;
+            border-right: 2px solid #f5f5f5;
+            border-left: 2px solid #f5f5f5;
+            border-bottom: 2px solid #f5f5f5;
+            background: #2d6987;
+            margin-left: 50px;
+        }
+
+        .vp-feature p {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+            font-size: x-large;
+            color: #e6e6e6;
+        }
+
+        .vp-feature span {
+            border: 6px solid #05B2D2;
+            background: white;
+            padding: 50px;
+            color: #002a80;
+            border-radius: 50%;
+
+        }
+        .vp-feature span:hover {
+            background: #929292;
+        }
+        .span4 {
+            margin-left: 40px;
+        }
+    </style>
+{% endblock %}

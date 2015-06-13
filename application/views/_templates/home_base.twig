@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Đoàn Thanh niên trường ĐH Bách Khoa TP.HCM</title>
+    <link href="{{ constant('URL') }}public/css/metro-bootstrap.css" rel="stylesheet">
+    <link href="{{ constant('URL') }}public/css/metro-bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ constant('URL') }}public/css/iconFont.css" rel="stylesheet">
+    <link href="{{ constant('URL') }}public/css/style.css" rel="stylesheet">
+</head>
+{% block javascripts %}
+    <script src="{{ constant('URL') }}public/js/jquery/jquery-2.1.0.min.js"></script>
+    <script src="{{ constant('URL') }}public/js/jquery/jquery.min.js"></script>
+    <script src="{{ constant('URL') }}public/js/jquery/jquery.widget.min.js"></script>
+    <script src="{{ constant('URL') }}public/js/metro.min.js"></script>
+{% endblock %}
+<body class="metro">
+<header>
+    {% include '_templates/userLogin.twig' %}
+    <nav class="navigation-bar light fixed-top shadow">
+        <nav class="navigation-bar-content container">
+            <span class="element-divider"></span>
+            <a class="element brand" id="homeButton" href="{{ constant('URL') }}home"><span
+                        class="icon-home"></span></a>
+            <span class="element-divider"></span>
+
+            <div class="element input-element">
+                <form>
+                    <div class="input-control text">
+                        <input id="txt-search" autocomplete="off" type="text" size="60" style="width: 100%"
+                               placeholder="Search...">
+                        <button class="btn-search"></button>
+                    </div>
+                    <div class="search-result">
+                        <ul class="result-wrapper">
+
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            {% if userLogged == 0 %}
+                <a class="element place-right" id="userLoginButton" href="#"><span class="icon-key-2"></span>&nbsp;&nbsp;Đăng
+                    nhập</a>
+            {% else %}
+                <span class="element-divider place-right"></span>
+                <a class="element place-right" href="{{ constant('URL') ~ 'users/userlogout/' }}"><span
+                            class="icon-exit on-left"></span>Đăng xuất</a>
+                <span class="element-divider place-right"></span>
+                <button class="element image-button image-left place-right">
+                    <strong>{{userLogged.name }}</strong>
+                </button>
+            {% endif %}
+        </nav>
+    </nav>
+</header>
+<!-- -->
+<div class="container">
+    <div class="header-menu">
+        <div class="clearfix">
+            <a class="place-left" href="{{ constant('URL') }}home">
+            </a>
+        </div>
+    </div>
+    <!-- Content, will be passed here via Twig -->
+    {% block content %} {% endblock %}
+</div>

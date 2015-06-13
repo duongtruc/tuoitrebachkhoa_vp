@@ -1,0 +1,127 @@
+{% extends "_templates/home_base.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function text(comment) {
+            if (comment.length > 0) {
+                $('#submit').show().fadeIn();
+            }
+            else {
+                $('#submit').hide().fadeOut();
+            }
+        }
+
+        function addComment() {
+            var id = {{ article.id }};
+            var comment = '"' + $('#comment').val() + '"';
+            {% if userLogged == 0 %}
+            var name = $('#commenter').val();
+            var office = $('#office').val();
+            {% else %}
+            var name = "{{ userLogged.fname ~ ' ' ~ userLogged.lname }}";
+            var office = "{{ userLogged.office }}";
+            {% endif %}
+            $.post("{{ constant('URL') }}articles/addComment",
+                    {
+                        id: id,
+                        comment: comment,
+                        name: name,
+                        office: office
+                    }
+            ).done(function () {
+                        $('#comment').val('');
+                        $('#submit').hide().fadeOut();
+                        getComments(id);
+                        var tab = $('#tab_2');
+                        var nComments = tab.data('value');
+                        $('#stat_2').html('<i class="icon-star"></i>Trực tiếp (' + nComments + ')');
+                    }
+            );
+        }
+
+        function getComments(id) {
+            $.post("{{ constant('URL') }}/articles/getArticleComments", {id: id},
+                    function (data) {
+                        $(".listComments").html(data);
+                        var tab = $('#tab_2');
+                        var nComments = tab.data('value');
+                        $('#stat_2').html('<i class="icon-star"></i>Trực tiếp (' + nComments + ')');
+                    })
+        }
+
+        /*setInterval(function () {
+         var tab = $('#_tab_2');
+         var id = tab.data('value');
+         var type = tab.data('role');
+         getComments(id);
+         }, 3000);*/
+    </script>
+{% endblock %}
+{% block title %}
+    Bài viết - {{ article.title }}
+{% endblock %}
+{% block content %}
+    {% set objectType = 1 %}
+    {% set object = article %}
+    {% set midUrl = 'articles/detail/' %}
+    <div class="main-content clearfix">
+        <nav class="breadcrumbs small">
+            <ul>
+                <li><a href="{{ constant('URL') }}home"><i class="icon-home"></i></a></li>
+                <li><a href="{{ constant('URL') }}articles">Bài viết</a></li>
+            </ul>
+        </nav>
+        <div class="grid">
+            <div class="row">
+                <div class="span9">
+                    <!--Article's content-->
+                    <p style="color: #93a1a1">
+                        <span><strong>{{ article.date|date('d/m/Y h:i') }}</strong></span>
+                        {% include "_templates/sharer.twig" %}
+                    </p>
+
+                    <div class="margin20"></div>
+                    <h2><strong>{{ article.title }}</strong></h2>
+
+
+                    <div style="float: left; margin-right: 10px"><img style="width: 300px; height: 200px"
+                                                                      src="{{ constant('URL') ~ '/public/img/' ~ article.imageUrl }}">
+                    </div>
+                    <p><strong>{{ article.sumary }}</strong></p>
+
+                    <p style="text-indent: 20px; clear: both">{{ article.details }}</p>
+
+                    <div class="margin20"></div>
+                    <p style="text-align: right">Tác giả: <strong>{{ article.author }}</strong></p>
+
+                    <div class="margin20"></div>
+                    {% set tags = article.tag|split(', ') %}
+                    <div><p><i class="icon-tag on-left fg-darkred"></i>Tags:
+                            {% for tag in tags %}
+                                <a href="#"><span
+                                            style="border: 1px solid #93a1a1; background: whitesmoke; padding: 2px; font-size: 12px">{{ tag|trim(',') }}</span></a>
+                            {% endfor %}
+                        </p></div>
+                    <!-- Article's comments-->
+                    {% include "_templates/comments.twig" %}
+                </div>
+                <div class="span3">
+                    <div class="panel">
+                        <div class="panel-header">
+                            Bài viết khác
+                        </div>
+                        <div class="panel-content">
+                            <ul>
+                                {% for article in otherArticles %}
+                                    <li>
+                                        <a href="{{ constant('URL') }}articles/detail/{{ article.id }}">{{ article.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

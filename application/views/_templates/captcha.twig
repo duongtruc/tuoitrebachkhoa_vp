@@ -1,0 +1,16 @@
+<label>Mã chống spam: </label>
+<input id="user-captcha" type="text" maxlength="5" style="height: 35px">
+<a style="cursor: pointer"><img id="captchaImage" src="{{ constant('URL') }}public/verify/captcha.php"></a>
+<script>
+    $("#captchaImage").on('click', function () {
+        $(this).attr('src', "{{ constant('URL') }}public/verify/captcha.php");
+    });
+    function checkCaptcha(check) {
+        $.post("{{ constant('URL') }}securities/checkCaptcha",
+                {
+                    'user-input': $("#user-captcha").val()
+                }).done(function (data) {
+                    check(data);
+                });
+    }
+</script>
