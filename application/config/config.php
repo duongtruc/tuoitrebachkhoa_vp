@@ -18,7 +18,7 @@ ini_set("display_errors", 1);
  * Configuration for: Project URL
  * Put your URL here, for local development "127.0.0.1" or "localhost" (plus sub-folder) is fine
  */
-define('URL', 'http://vp.tuoitrebachkhoa.edu.vn/');
+define('URL', 'http://localhost/tuoitrebachkhoa_vp/');
 
 /**
  * Configuration for: Database
@@ -27,8 +27,8 @@ define('URL', 'http://vp.tuoitrebachkhoa.edu.vn/');
 define('DB_TYPE', 'mysql');
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'tuoitreb_vp');
-define('DB_USER', 'tuoitreb_vp');
-define('DB_PASS', '2121992');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 /**
  * Configuration for: Mailer (SMTP)
  *
@@ -36,7 +36,7 @@ define('DB_PASS', '2121992');
 define('MAILER_HOST', 'smtp.gmail.com');
 define('MAILER_PORT', '465');
 define('MAILER_USER', 'duongtruc.92@gmail.com');
-define('MAILER_PASS', 'nguyentruc');
+define('MAILER_PASS', '');
 define('MAILER_FROM', 'info@tuoitrebachkhoa.edu.vn');
 define('MAILER_FROM_NAME', 'Cổng thông tin tình nguyện TP.HCM');
 
