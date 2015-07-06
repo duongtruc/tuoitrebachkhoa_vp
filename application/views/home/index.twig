@@ -28,8 +28,33 @@
                     <span class="icon-checkmark"></span>
                 </a>
             </div>
+            </div>
+        <div class="row">
+            <div class="span4 vp-feature">
+                <a href="{{ constant('URL') }}mhxactivities/">
+                    <p>HOẠT ĐỘNG MÙA HÈ XANH</p>
+                    <span class="icon-newspaper"></span>
+                </a>
+            </div>
         </div>
     </div>
+    <button id="btn-notif">Show dialog</button>
+    <div data-role="dialog" id="dialog">
+    </div>
+    <script>
+        $("#btn-notif").on('click', function() {
+            showNotif();
+        });
+        function showNotif() {
+            $.Notify({
+                caption: 'Notify title',
+                content: 'Notify content',
+                type: 'warning',
+                keepOpen: true
+            });
+        }
+
+    </script>
     <style>
         .vp-feature {
             text-align: center;
