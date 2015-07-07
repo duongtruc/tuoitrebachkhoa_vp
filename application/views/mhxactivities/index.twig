@@ -102,10 +102,9 @@
                             'd-content': $("#d-content").val(),
                             'd-quantity': $("#d-quantity").val(),
                             'd-result': $("#d-result").val()
-                        }).done(function () {
+                        }).done(function (data) {
                             if (data == '1') {
-                                location.reload(true);
-                                $("#d-upload").fadeToggle();
+                                window.location.reload(true);
                             }
                             else {
                                 alert('Có lỗi xảy ra!');
