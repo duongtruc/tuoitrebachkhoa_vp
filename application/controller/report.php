@@ -21,15 +21,16 @@ class Report extends Controller
     {
         if (session_status() == PHP_SESSION_NONE)
             session_start();
+        $dId = $_POST['d-id'];
         $dName = $_POST['d-name'];
-        $dDate = $_POST['d-date'];
         $dSummary = $_POST['d-summary'];
+        $dRelation = $_POST['d-relation'];
         if (isset($_SESSION['email']))
             $dAuthor = $_SESSION['email'];
         else
             header("location: " . URL);
         $reportmodel = $this->loadModel('reportmodel');
-        echo $reportmodel->newStage($dName, $dDate, $dSummary, $dAuthor);
+        echo  $reportmodel->newStage($dId, $dName, $dSummary, $dAuthor, $dRelation);
     }
     public function detail($id)
     {

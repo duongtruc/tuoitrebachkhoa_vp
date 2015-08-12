@@ -133,16 +133,16 @@ class UsersModel extends Controller
      */
     public function userLogin($email, $password)
     {
-        $sql = "SELECT u.name, u.level FROM users u
-        WHERE email = '$email' AND password = '$password'";
+        $sql = "SELECT u.name, u.level FROM users u WHERE email = '$email' AND password = '$password'";
         $query = $this->db->prepare("SET NAMES 'UTF8'");
         $query->execute();
+        //$sql = "SELECT name, level FROM users WHERE level=1";
         $query = $this->db->prepare($sql);
         $query->execute();
         $result = $query->fetch(PDO::FETCH_OBJ);
-            if (!is_null($result)) {
-                session_start();
-                $_SESSION['email'] = (string)$result->email;
+        if (is_object($result)) {
+            session_start();
+            $_SESSION['email'] = $email;
             $_SESSION['name'] = (string)$result->name;
             $_SESSION['level'] = (string)$result->level;
             if (isset($_SERVER['HTTP_REFERER'])) {
@@ -150,6 +150,7 @@ class UsersModel extends Controller
             } else {
                 header('Location: ' . URL . '/home');
             }
+            echo($result->email);
             return 1;
             exit;
         } else {

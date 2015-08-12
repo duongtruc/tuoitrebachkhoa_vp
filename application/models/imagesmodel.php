@@ -36,14 +36,25 @@ class ImagesModel
         $query = $this->db->prepare("SET NAMES 'UTF8'");
         $query->execute();
         if ($type == 'documents')
-            $sql = "INSERT INTO document (url, creator) VALUES('$imageUrl', '$dAuthor')";
+            $query = $this->db->prepare("SELECT MAX(id) as id FROM  document");
         else if($type== 'report')
-            $sql = "INSERT INTO stage (fileurl, creator) VALUES('$imageUrl', '$dAuthor')";
+            $query = $this->db->prepare("SELECT MAX(id) as id FROM  stage");
         else
-            $sql = "INSERT INTO checklistfile (fileurl, creator) VALUES('$imageUrl', '$dAuthor')";
+            $query = $this->db->prepare("SELECT MAX(id) as id FROM  checklistfile");
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_OBJ);
+        if (!is_null($result))
+            $id = (string)(intval($result->id)+1);
+        else $id = '1';
+        if ($type == 'documents')
+            $sql = "INSERT INTO document (id, url, creator) VALUES('$id', '$imageUrl', '$dAuthor')";
+        else if($type== 'report')
+            $sql = "INSERT INTO stage (id, fileurl, creator) VALUES('$id', '$imageUrl', '$dAuthor')";
+        else
+            $sql = "INSERT INTO checklistfile (id, fileurl, creator) VALUES('$id', '$imageUrl', '$dAuthor')";
         $query = $this->db->prepare($sql);
         if ($query->execute())
-            return 1;
+            return $id;
         else
             return 0;
     }

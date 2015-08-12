@@ -126,7 +126,7 @@ class Uploader extends Controller
 
     public function userUpload()
     {
-        $images_model = $this->loadModel('imagesmodel');
+        $upload_model = $this->loadModel('imagesmodel');
         define ("MAX_SIZE", "9000");
         $type = $_GET['type'];
         $valid_formats = array("doc", "docx", "zip", "rar", "pdf");
@@ -151,14 +151,14 @@ class Uploader extends Controller
                         $newname = $uploaddir . '/' . $image_name;
 
                         if (move_uploaded_file($_FILES['photos']['tmp_name'][$name], $newname)) {
-                            $images_model->addOneImage($endPath . "/" . $image_name, $type);
+                            $result = $upload_model->addOneImage($endPath . "/" . $image_name, $type);
+                            echo "<div style='font-size: 0' class='id-new-report'>".$result."</div>";
                         } else {
                             echo '<span class="imgList">You have exceeded the size limit! so moving unsuccessful! </span>';
                         }
 
                     } else {
                         echo '<span class="imgList">You have exceeded the size limit!</span>';
-
                     }
 
                 } else {

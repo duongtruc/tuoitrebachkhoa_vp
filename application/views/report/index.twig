@@ -1,6 +1,6 @@
 {% extends "_templates/home_base.twig" %}
 {% block content %}
-    <script src="{{ constant('URL') }}public/js/jquery/jquery.wallform.js"></script>
+    <script src="{{ constant('URL') }}public/js/jquery/jquery.wallform.js"></script> <!-- upload immediately -->
     <div class="main-content clearfix">
         <div class="grid">
             <div class="row">
@@ -12,10 +12,20 @@
                                  style="display: none; border: 1px dashed #777777; padding: 10px; margin: 10px">
                                 <label for="d-name">Tên</label>
                                 <input id="d-name" type="text" size="60">
-                                <label for="d-date">Ngày hết hạn</label>
-                                <input id="d-date" type="datetime-local">
                                 <label for="d-summary">Mô tả</label>
                                 <textarea id="d-summary" style="width: 100%; height: 200px"></textarea>
+                                <!-- Choose related
+                                <label for="d-relation">Đối tượng liên quan</label>
+                                <label class="input-control checkbox small-check">
+                                    <input name="d-relation" type="checkbox" value="duongtruc.92@gmail.com">
+                                    <span class="check"></span>
+                                    <span class="caption">Nguyễn Dương Trực</span>
+                                </label>
+                                <label class="input-control checkbox small-check">
+                                    <input name="d-relation" type="checkbox" value="namnguyen.qsb106@yahoo.com">
+                                    <span class="check"></span>
+                                    <span class="caption">Nguyễn Anh Nam</span>
+                                </label>-->
                                 <!-- Image -->
                                 <label>File đính kèm</label>
 
@@ -41,7 +51,6 @@
                         <table>
                             <tr>
                                 <td>Kỳ báo cáo</td>
-                                <td>Ngày hết hạn</td>
                                 <td>Mô tả</td>
                                 <td>File đính kèm</td>
                                 <td>Tình trạng</td>
@@ -49,7 +58,6 @@
                             {% for stage in stages %}
                                 <tr>
                                     <td>{{ stage.stagename }}</td>
-                                    <td>{{ stage.expiredate|date('d-m-Y h:i') }}</td>
                                     <td>{{ stage.description }}</td>
                                     <td>
                                         {% if stage.fileurl|length > 0 %}
@@ -89,20 +97,24 @@
             $("#submit").on('click', function () {
                 $.post('{{ constant('URL') }}report/newStage',
                         {
+                            'd-id': $(".id-new-report").text(),
                             'd-name': $("#d-name").val(),
-                            'd-date': $("#d-date").val(),
-                            'd-summary': $("#d-summary").val()
+                            'd-summary': $("#d-summary").val(),
+                            'd-relation': $("#d-relation").val()
                         }).done(function (data) {
-                            if (data == '1') {
+                            if (data != '0') {
                                 location.reload();
                             }
                             else {
                                 alert('Có lỗi xảy ra!');
+
+                                // Chạy hàm xóa file đã upload với data là id của stage chứa file mới upload
                             }
-                        })
+                        });
             });
-        })
+        });
         /*image upload*/
+
         $('#photoimg').on('change', function () {
             $("#imageform").ajaxForm({target: '#preview',
                 beforeSubmit: function () {
@@ -117,8 +129,6 @@
                     $("#imageloadstatus").hide();
                     $("#imageloadbutton").show();
                 } }).submit();
-
-
         });
         /*end image upload*/
     </script>

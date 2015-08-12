@@ -16,25 +16,27 @@ class ReportModel
             exit("Database couldn't established");
         }
     }
-    public function newStage($dName, $dNo, $dSummary, $dAuthor)
+    public function newStage($dId, $dName, $dSummary, $dAuthor, $dRelation)
     {
-        $sql = "SELECT MAX(`id`) AS `id` FROM stage";
         $query = $this->db->prepare("SET NAMES 'UTF8'");
         $query->execute();
+        $sql = "UPDATE stage SET
+        stagename = '$dName', description = '$dSummary'
+        WHERE id = '$dId'";
         $query = $this->db->prepare($sql);
-        $query->execute();
-        $result = $query->fetch(PDO::FETCH_OBJ);
-        if (!is_null($result)) {
-            $id = (string)$result->id;
-            $sql = "UPDATE stage SET
-            `expiredate` = '$dNo', `stagename` = '$dName', `description` = '$dSummary'
-        WHERE `id` = '$id' AND creator = '$dAuthor'";
-            $query = $this->db->prepare($sql);
-            if ($query->execute())
-                return 1;
-            else
-                return 0;
+        if ($query->execute())
+        {
+            /*
+            foreach($dRelation as $email)
+            {
+                $sql = "INSERT INTO reportrelation(`reportid`,`email`) VALUES ('$dId','$email')";
+                $query = $this->db->prepare($sql);
+                $query->execute();
+            }*/
+            return intval($dId);
         }
+        else
+            return 0;
     }
     /**
      * Ham tra ve mot mang cac article theo mot so tieu chuan nhat dinh
@@ -57,7 +59,7 @@ class ReportModel
     {
         $query = $this->db->prepare("SET NAMES 'UTF8'");
         $query->execute();
-        $sql = "SELECT * FROM stage WHERE expiredate > CURDATE() ";
+        $sql = "SELECT * FROM stage ";
         if ($quantity > 0) {
             $sql .= " LIMIT $quantity";
         }
