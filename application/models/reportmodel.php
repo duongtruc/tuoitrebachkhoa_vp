@@ -59,7 +59,7 @@ class ReportModel
     {
         $query = $this->db->prepare("SET NAMES 'UTF8'");
         $query->execute();
-        $sql = "SELECT * FROM stage ";
+        $sql = "SELECT * FROM stage ORDER BY ID DESC";
         if ($quantity > 0) {
             $sql .= " LIMIT $quantity";
         }

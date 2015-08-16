@@ -11,7 +11,7 @@ class Report extends Controller
     public function index()
     {
         $report_model = $this->loadModel('reportmodel');
-        $stages = $report_model->getSomeStages(2, 0);
+        $stages = $report_model->getSomeStages(6, 0);
 
         $users_model = $this->loadModel('usersmodel');
         $userLogged = $users_model->checkUserLogged();
@@ -25,6 +25,11 @@ class Report extends Controller
         $dName = $_POST['d-name'];
         $dSummary = $_POST['d-summary'];
         $dRelation = $_POST['d-relation'];
+        
+        $file = fopen("relation.txt","w");
+        fwrite($file,$dRelation[0]);
+        fclose($file);
+        
         if (isset($_SESSION['email']))
             $dAuthor = $_SESSION['email'];
         else

@@ -14,18 +14,18 @@
                                 <input id="d-name" type="text" size="60">
                                 <label for="d-summary">Mô tả</label>
                                 <textarea id="d-summary" style="width: 100%; height: 200px"></textarea>
-                                <!-- Choose related
+                                <!-- Choose related -->
                                 <label for="d-relation">Đối tượng liên quan</label>
                                 <label class="input-control checkbox small-check">
-                                    <input name="d-relation" type="checkbox" value="duongtruc.92@gmail.com">
+                                    <input class="d-relation" type="checkbox" value="duongtruc.92@gmail.com">
                                     <span class="check"></span>
                                     <span class="caption">Nguyễn Dương Trực</span>
                                 </label>
                                 <label class="input-control checkbox small-check">
-                                    <input name="d-relation" type="checkbox" value="namnguyen.qsb106@yahoo.com">
+                                    <input class="d-relation" type="checkbox" value="namnguyen.qsb106@yahoo.com">
                                     <span class="check"></span>
                                     <span class="caption">Nguyễn Anh Nam</span>
-                                </label>-->
+                                </label>
                                 <!-- Image -->
                                 <label>File đính kèm</label>
 
@@ -86,7 +86,16 @@
             margin: 10px;
         }
     </style>
-    <script>
+    <script>/*
+        function GetRelation(){
+            var list = document.getElementsByClassName("d-relation");
+            var chosen = new Array();
+            for (i = 0; i < list.length; i++){
+                if (list[i].checked)
+                    chosen[chosen.length] = list[i];
+            }
+            return chosen;
+        }*/
         $(document).ready(function () {
             $("#d-upload-button").on('click', function () {
                 $("#d-upload").fadeToggle();
@@ -97,10 +106,16 @@
             $("#submit").on('click', function () {
                 $.post('{{ constant('URL') }}report/newStage',
                         {
+                            var list = document.getElementsByClassName("d-relation");
+                            var chosen = new Array();
+                            for (i = 0; i < list.length; i++){
+                                if (list[i].checked)
+                                    chosen[chosen.length] = list[i];
+                            }
                             'd-id': $(".id-new-report").text(),
                             'd-name': $("#d-name").val(),
                             'd-summary': $("#d-summary").val(),
-                            'd-relation': $("#d-relation").val()
+                            'd-relation': chosen
                         }).done(function (data) {
                             if (data != '0') {
                                 location.reload();
