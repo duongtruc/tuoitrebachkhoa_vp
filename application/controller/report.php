@@ -21,21 +21,33 @@ class Report extends Controller
     {
         if (session_status() == PHP_SESSION_NONE)
             session_start();
-        $dId = $_POST['d-id'];
         $dName = $_POST['d-name'];
+        $dDate = $_POST['d-date'];
         $dSummary = $_POST['d-summary'];
         $dRelation = $_POST['d-relation'];
         
-        $file = fopen("relation.txt","w");
-        fwrite($file,$dRelation[0]);
-        fclose($file);
+        if ($_POST['d-id']!='')
+        {
+            $dId = $_POST['d-id'];
+            $withFile = true;
+        }
+        else
+        {
+            $query = $this->db->prepare("SET NAMES UTF8");
+            $query->execute();
+            $query = $this->db->prepare("SELECT MAX(id) AS newid FROM stage");
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_OBJ);
+            $dId = intval($result->newid)+1;
+            $withFile = false;
+        }
         
         if (isset($_SESSION['email']))
             $dAuthor = $_SESSION['email'];
         else
             header("location: " . URL);
         $reportmodel = $this->loadModel('reportmodel');
-        echo  $reportmodel->newStage($dId, $dName, $dSummary, $dAuthor, $dRelation);
+        echo  $reportmodel->newStage($withFile, $dId, $dName, $dDate, $dSummary, $dAuthor, $dRelation);
     }
     public function detail($id)
     {

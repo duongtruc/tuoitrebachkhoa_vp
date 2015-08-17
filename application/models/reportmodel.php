@@ -16,23 +16,26 @@ class ReportModel
             exit("Database couldn't established");
         }
     }
-    public function newStage($dId, $dName, $dSummary, $dAuthor, $dRelation)
+    public function newStage($withFile, $dId, $dName, $dDate, $dSummary, $dAuthor, $dRelation)
     {
         $query = $this->db->prepare("SET NAMES 'UTF8'");
         $query->execute();
-        $sql = "UPDATE stage SET
-        stagename = '$dName', description = '$dSummary'
-        WHERE id = '$dId'";
+        if ($withFile){
+            $sql = "UPDATE stage SET
+            stagename = '$dName', description = '$dSummary', expiredate = '$dDate' 
+            WHERE id = '$dId'";
+        }
+        else
+            $sql = "INSERT INTO stage VALUES('$dId','$dName','$dSummary','$dDate','', '$dAuthor')";
         $query = $this->db->prepare($sql);
         if ($query->execute())
         {
-            /*
             foreach($dRelation as $email)
             {
-                $sql = "INSERT INTO reportrelation(`reportid`,`email`) VALUES ('$dId','$email')";
+                $sql = "INSERT INTO reportrelation(id, email) VALUES ('$dId','$email')";
                 $query = $this->db->prepare($sql);
                 $query->execute();
-            }*/
+            }
             return intval($dId);
         }
         else
