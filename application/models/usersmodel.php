@@ -229,5 +229,23 @@ class UsersModel extends Controller
             return 0;
         }
     }
+    
+    public function findName($emailList)
+    {
+        $length = count($emailList);
+        $nameList = array();
+        $query = $this->db->prepare("SET NAMES 'UTF8'");
+        $query->execute();
+        
+        for ($i = 0; $i < $length; $i++)
+        {
+            $sql = "SELECT Name FROM users WHERE email='$emailList[$i]'";
+            $query = $this->db->prepare($sql);
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_OBJ);
+            array_push($nameList, $result->Name);
+        }
+        return $nameList;
+    }
 
 }

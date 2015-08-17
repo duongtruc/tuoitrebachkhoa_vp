@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Configuration
@@ -33,20 +33,21 @@ define('DB_PASS', '');
  * Configuration for: Mailer (SMTP)
  *
  */
-define('MAILER_HOST', 'smtp.gmail.com');
+define('MAILER_HOST', 'smtp.mail.yahoo.com');
 define('MAILER_PORT', '465');
-define('MAILER_USER', 'duongtruc.92@gmail.com');
-define('MAILER_PASS', '');
-define('MAILER_FROM', 'info@tuoitrebachkhoa.edu.vn');
+define('MAILER_USER', 'namnguyen.qsb106@yahoo.com');
+define('MAILER_PASS', 'Polonium1995');
+define('MAILER_FROM', 'namnguyen.qsb106@yahoo.com');
 define('MAILER_FROM_NAME', 'Cổng thông tin tình nguyện TP.HCM');
 
-/*define('MAILER_HOST', 'serv11.hostvn.net');
+/*
+define('MAILER_HOST', 'serv11.hostvn.net');
 define('MAILER_PORT', '465');
 define('MAILER_USER', 'info@tuoitrebachkhoa.edu.vn');
-define('MAILER_PASS', '123456');
-define('MAILER_FROM', 'info@tuoitrebachkhoa.edu.vn');
-define('MAILER_FROM_NAME', 'Cổng thông tin tình nguyện TP.HCM');*/
-
+define('MAILER_PASS', 'truc2121992');
+define('MAILER_FROM', 'info@tinhnguyen.edu.vn');
+define('MAILER_FROM_NAME', 'Cổng dịch vụ văn phòng Đoàn trường.');
+*/
 /**
  * Configuration for: Views
  *

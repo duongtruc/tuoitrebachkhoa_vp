@@ -41,14 +41,20 @@ class Report extends Controller
             $dId = intval($result->newid)+1;
             $withFile = false;
         }
-        
         if (isset($_SESSION['email']))
             $dAuthor = $_SESSION['email'];
         else
             header("location: " . URL);
-        $reportmodel = $this->loadModel('reportmodel');
-        echo  $reportmodel->newStage($withFile, $dId, $dName, $dDate, $dSummary, $dAuthor, $dRelation);
+        $report_model = $this->loadModel('reportmodel');
+        echo  $report_model->newStage($withFile, $dId, $dName, $dDate, $dSummary, $dAuthor, $dRelation);
+        
+        $users_model = $this->loadModel('usersmodel');
+        $nameList = $users_model->findName($dRelation);
+        $mailer_model = $this->loadModel('mailermodel');
+        $mailer_model->announceMailer($dRelation, $nameList);
     }
+    
+    
     public function detail($id)
     {
         if (isset($_GET['tab'])) {
