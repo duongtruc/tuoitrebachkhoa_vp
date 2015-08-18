@@ -169,5 +169,14 @@ class Uploader extends Controller
             }
         }
     }
+    
+    public function abortUpload(){
+        $dId = $_POST['d-id'];
+        $type = $_POST['type'];
+        $images_model = $this->loadModel('imagesmodel');
+        $pathFile = $images_model->abortUpload($type, $dId);
+        $fullPath = getcwd() . '/public/' . $pathFile;
+        unlink($fullPath);
+    }
 }
 

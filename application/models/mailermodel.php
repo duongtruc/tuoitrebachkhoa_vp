@@ -94,19 +94,10 @@ class mailermodel
         $mail->From = MAILER_FROM;
         $mail->FromName = MAILER_FROM_NAME;
         $mail->Subject = "Thông báo có báo cáo mới.";
-        
-        $result = '';
         for ($i = 0; $i < $length; $i++ ){
             $mail->addAddress($emailList[$i]);
             $mail->Body = "Hello ". $nameList[$i];
-            if ($mail->Send())
-            $result = $result. 'done';
-            else
-            $result = $result. $mail->ErrorInfo;
-            
+            $mail->Send()
         }
-        $file =fopen('mail.log','w');
-        fwrite($file,$result);
-        fclose($file);
     }
 }

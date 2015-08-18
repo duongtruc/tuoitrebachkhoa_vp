@@ -93,4 +93,31 @@ class ImagesModel
         }
 
     }
+    public function abortUpload($type, $id)
+    {
+        $file = fopen('delete.log','w');
+        fwrite($file,'get in');
+        fclose($file);
+        $query = $this->db->prepare("SET NAMES 'UTF8'");
+        $query->execute();
+        if ($type == 'report'){
+            $getsql = "SELECT fileurl as url FROM stage WHERE id = '$id'";
+            $delelesql = "DELETE FROM stage WHERE id = '$id'";
+        }
+        elseif ($type == 'documents'){
+            $getsql = "SELECT url FROM document WHERE id = '$id'";
+            $delelesql = "DELETE FROM document WHERE id = '$id'";
+        }
+        else {
+            $getsql = "SELECT fileurl as url FROM checklistfile WHERE id = '$id'";
+            $delelesql = "DELETE FROM checklistfile WHERE id = '$id'";
+        }
+        $query = $this->db->prepare($getsql);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_OBJ);
+        $path = $result->url;
+        $query = $this->db->prepare($delelesql);
+        $query->execute();
+        return $path;
+    }
 }

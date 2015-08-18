@@ -54,7 +54,6 @@ class Report extends Controller
         $mailer_model->announceMailer($dRelation, $nameList);
     }
     
-    
     public function detail($id)
     {
         if (isset($_GET['tab'])) {

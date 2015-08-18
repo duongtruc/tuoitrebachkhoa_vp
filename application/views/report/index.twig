@@ -105,6 +105,16 @@
                 $("#d-upload").fadeToggle();
             });
             $("#reset").on('click', function () {
+                if ($(".id-new-report").text()!=''){
+                    alert('yes');
+                    $.post('{{ constant('URL') }}uploader/abortUpload',
+                           {
+                                'd-id': $(".id-new-report").text(),
+                                'type': 'report'
+                           }).done(function(){
+                               location.reload();
+                           });
+                }
                 $("#d-upload").fadeToggle();
             });
             $("#submit").on('click', function () {
